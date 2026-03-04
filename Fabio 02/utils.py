@@ -35,3 +35,9 @@ def verificar_se_e_primo(n):
         return 'Não é primo'
     else:  
         return 'É primo'
+
+def eh_impar_ou_par(n):
+    if n % 2 == 0:
+        return 'O número é par'
+    else:
+        return 'O número é ímpar'
