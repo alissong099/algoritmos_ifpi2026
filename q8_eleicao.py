@@ -32,7 +32,7 @@ def main():
         opcao = menu_eleicao()
         
         if opcao == 2:
-            reultado = exibir_resultado(votos_candidato_1, votos_candidato_2, votos_candidato_3, votos_candidato_4, votos_brancos, votos_nulos, votos_validos)
+            reultado = exibir_resultado(votos_brancos, votos_candidato_1, votos_candidato_2, votos_candidato_3, votos_candidato_4, votos_nulos, votos_validos)
             print(reultado)
     
 
@@ -71,57 +71,74 @@ def menu_voto():
         print('Escolha inválida! Por favor escolha uma das opções disponivéis.')
         return menu_voto()
         
-def exibir_resultado(vt1, vt2, vt3, vt4, vt5, vt0, vt_validos):
-    percentual_canditado_1 = vt1 / vt_validos * 100
-    percentual_canditado_2 = vt2 / vt_validos * 100
-    percentual_canditado_3 = vt3 / vt_validos * 100
-    percentual_canditado_4 = vt4 / vt_validos * 100
+def exibir_resultado(vt0, vt1, vt2, vt3, vt4, vt5, vt_validos):
+    if vt_validos == 0:
+        return "Nenhum voto válido registrado ainda."
     
-    maior_percentual = 0
+    percentual_canditado_1 = (vt1 * 100) / vt_validos
+    percentual_canditado_2 = (vt2 * 100) / vt_validos
+    percentual_canditado_3 = (vt3 * 100) / vt_validos
+    percentual_canditado_4 = (vt4 * 100) / vt_validos
+    
+    maior_percentual = percentual_canditado_1
     vencedor = ''
     
-    if percentual_canditado_1 > maior_percentual:
-        maior_percentual = percentual_canditado_1
-        vencedor = 'Rogério Silva'
     if percentual_canditado_2 > maior_percentual:
         maior_percentual = percentual_canditado_2
-        vencedor = 'Ricardo Ramos'
     if percentual_canditado_3 > maior_percentual:
         maior_percentual = percentual_canditado_3
-        vencedor = 'Ely Miranda'
     if percentual_canditado_4 > maior_percentual:
         maior_percentual = percentual_canditado_4
-        vencedor = 'Aline Leal'
     
-    if percentual_canditado_1 == percentual_canditado_2 > maior_percentual:
-        vencedor = 'Rogério Silva e Ricardo Ramos'
-    elif percentual_canditado_1 == percentual_canditado_3 > maior_percentual:
-        vencedor = 'Rogério Silva e Ely Miranda'
-    elif percentual_canditado_1 == percentual_canditado_4 > maior_percentual:
-        vencedor = 'Rogério Silva e Aline Leal'
-    elif percentual_canditado_2 == percentual_canditado_3 > maior_percentual:
-        vencedor = 'Ricardo Ramos e Ely Miranda'
-    elif percentual_canditado_2 == percentual_canditado_4 > maior_percentual:
-        vencedor = 'Ricardo Ramos e Aline Leal'
-    elif percentual_canditado_3 == percentual_canditado_4 > maior_percentual:
-        vencedor = 'Ely Miranda e Aline Leal'
+    vencedor = ""
+    quantidade_vencedores = 0
     
-    if maior_percentual < 50:
-        return 'Será necessário um segundo turno!'
-    else:
-        return f'''RESULTADO ELEIÇÃO 2026:
-            VOTOS VÁLIDOS: {vt_validos}
-            VOTOS BRANCOS: {vt0}
-            VOTOS NULOS: {vt5}
+    if percentual_canditado_1 == maior_percentual:
+        vencedor = "Rogério Silva"
+        quantidade_vencedores += 1
         
-            PERCENTUAL CANDIDATOS:
-            Rogério Silva: {percentual_canditado_1}
-            Ricardo Ramos: {percentual_canditado_2}
-            Ely Miranda: {percentual_canditado_3}
-            Aline Leal: {percentual_canditado_4}
+    if percentual_canditado_2 == maior_percentual:
+        if quantidade_vencedores > 0:
+            vencedor += " e Ricardo Ramos"
+        else:
+            vencedor = "Ricardo Ramos"
+        quantidade_vencedores += 1
         
-            VENCEDOR ELEIÇÕES 2026:
-            {vencedor}'''
+    if percentual_canditado_3 == maior_percentual:
+        if quantidade_vencedores > 0:
+            vencedor += " e Ely Miranda"
+        else:
+            vencedor = "Ely Miranda"
+        quantidade_vencedores += 1
+        
+    if percentual_canditado_4 == maior_percentual:
+        if quantidade_vencedores > 0:
+            vencedor += " e Aline Leal"
+        else:
+            vencedor = "Aline Leal"
+        quantidade_vencedores += 1
+
+    if maior_percentual <= 50:
+        vt1, vt2, vt3, vt4, vt5, vt0, vt_validos = 0, 0, 0, 0, 0, 0, 0
+        return f"Haverá SEGUNDO TURNO!\nOs mais votados foram: {vencedor} com {maior_percentual:.2f}%" 
+    
+    prefixo = "Vencedor:"
+    if quantidade_vencedores > 1:
+        prefixo = "Empate entre:"
+
+    return f'''RESULTADO ELEIÇÃO 2026:
+    VOTOS VÁLIDOS: {vt_validos}
+    VOTOS BRANCOS: {vt0}
+    VOTOS NULOS: {vt5}
+        
+    PERCENTUAL CANDIDATOS:
+    Rogério Silva: {percentual_canditado_1}
+    Ricardo Ramos: {percentual_canditado_2}
+    Ely Miranda: {percentual_canditado_3}
+    Aline Leal: {percentual_canditado_4}
+        
+    VENCEDOR ELEIÇÕES 2026:
+    {prefixo} {vencedor}'''
 
 
 main()
