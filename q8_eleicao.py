@@ -81,7 +81,6 @@ def exibir_resultado(vt0, vt1, vt2, vt3, vt4, vt5, vt_validos):
     percentual_canditado_4 = (vt4 * 100) / vt_validos
     
     maior_percentual = percentual_canditado_1
-    vencedor = ''
     
     if percentual_canditado_2 > maior_percentual:
         maior_percentual = percentual_canditado_2
